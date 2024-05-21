@@ -1,0 +1,66 @@
+@font-face {
+  font-family: 'Cocomelon';
+  src: url('./paginas/BubbleBobble.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+
+    height: 100dvh;
+    width: 100dvw;
+    overflow: hidden;
+    background-image: linear-gradient(to right top, #f6eaa5, #f8edaf, #f9f0b9, #fbf2c2, #fcf5cc, #fdf5d0, #fdf4d4, #fdf4d8, #fbf0d8, #f9ecd8, #f6e8d8, #f2e5d8);
+    font-family: 'Cocomelon', sans-serif;
+
+    .pantalla{
+      display: none;
+    }
+}
+
+@media (max-width: 759.99px) and (orientation: portrait) {
+  #pantalla{
+    display: block;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    font-weight: 400;
+    background-image: linear-gradient(to left top, #379237, #4e9f4c, #63ab61, #78b876, #8cc58b, #8bc38a, #8ac089, #89be88, #73ac71, #5d9b5b, #468a44, #2e792e);
+    z-index: 5;
+    p{
+      text-wrap: wrap;
+    }
+    img{
+              animation: mobileAnimation 3s infinite ease-in-out;
+
+    }
+  }
+}
+@keyframes mobileAnimation {
+  0% {
+    transform: translate(0);
+  }
+  12.5% {
+    transform: translateY(-1dvh);
+  }
+  25% {
+    transform: translate(0);
+  }
+  50% {
+      transform: translateX(0);
+    }
+  75% {
+    transform: rotate(90deg);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

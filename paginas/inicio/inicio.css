@@ -1,0 +1,141 @@
+body{
+    display: flex;
+    justify-content: center;
+}
+main{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .titulo{
+        margin: 10dvh auto 0 auto;
+        h2{
+            text-align: center;
+            font-size: 6em;
+            font-weight: 400;
+            color: #2e792e;
+            text-shadow: 4px 4px 6px rgba(52,52,52,0.59);
+            
+        }
+        img{
+            width: 100%;
+        }
+    }
+    #entrar{
+        width: 20dvw;
+        margin: 0 auto;
+        background-color: #379237;
+        border-radius: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.2em;
+        font-size: 3em;
+        cursor: pointer;
+        img:first-child{
+            width: 40%;
+        }
+        img:last-child{
+            width: 20%;
+            margin: 0.2em 0;
+        }
+    }
+
+        .abajo-izquierda img,
+        .abajo-derecha img{
+            width: 35dvw;
+            aspect-ratio: 1/1;
+        }
+        .abajo-izquierda{
+            position: absolute;
+            left: -1dvw;
+            bottom: 3dvh;
+            img{
+                animation: rotateAnimation 6s infinite ease-in-out;
+            }
+        }
+        .abajo-derecha{
+            position: absolute;
+            right: -5dvw;
+            bottom: -10dvh;
+        }
+        
+    .capa{
+        display: flex;
+        z-index: 2;
+        img{
+            height: auto;
+            width: 40dvw;
+        }
+    
+        .ultimo{
+            transform: translate(-3dvw, 6dvh);
+        }
+    }
+    #capa1{
+        position: absolute;
+        left: -6dvw;
+        bottom: 3dvh;
+    }
+    #capa2{
+        position: absolute;
+        left: -20dvw;
+        bottom: -3dvh;
+        /* animation: seaAnimation 6s infinite ease-in-out; */
+        z-index: 3;
+
+    }
+    #capa3{
+        position: absolute;
+        left: 0dvw;
+        bottom: -2dvh;
+    }
+}
+@media (max-height: 759.99px){
+
+  h2{
+    margin: 0;
+    padding: 0;
+  }
+
+}
+
+
+
+/* animación barco */
+@keyframes rotateAnimation {
+    0% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(-7deg);
+    }
+    50% {
+        transform: rotate(0deg);
+      }
+    75% {
+      transform: rotate(7deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+@keyframes seaAnimation {
+    0% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(2dvw);
+    }
+    50% {
+        transform: translateX(0);
+      }
+    75% {
+      transform: translateX(-3dvw);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }

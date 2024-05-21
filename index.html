@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./paginas/inicio/inicio.css">
+    <title>Capybara Wars</title>
+</head>
+<body>
+    <main>
+        <div id="pantalla" class="pantalla">
+            <div><img src="./paginas/mobile.svg" alt="mobile" width="32"></div>
+            <p>Rota el dispositivo <br>para una mejor experiencia.</p>
+        </div>
+        <audio id="audio" src="./paginas/inicio/Capybara-Song.mp3" autoplay loop></audio>
+        <div class="arriba">
+            <div class="titulo"><h2>Capybara Wars</h2></div>
+            <!-- deberia detectar si está logueado o no y dirigir al tablero o al login -->
+            <a href="./paginas/login-register/login.html"><div id="entrar">
+                <img src="./paginas/inicio/img/start.png" alt="">
+                <img src="./paginas/inicio/img/play.png" alt="">
+            </div></a>
+        </div>
+        <div class="abajo-izquierda">
+                <img src="./paginas/inicio/img/pirata.png" alt="">
+        </div>
+        <div class="abajo-derecha">
+            <img src="./paginas/inicio/img/madre-hijo.png" alt="">
+        </div>
+        <div class="capa" id="capa1">
+            <img src="./paginas/inicio/img/agua.png" alt="">
+            <img class="ultimo" src="./paginas/inicio/img/agua.png" alt="">
+        </div>
+        <div class="capa" id="capa2">
+            <img src="./paginas/inicio/img/agua.png" alt="">
+            <img class="ultimo" src="./paginas/inicio/img/agua.png" alt="">
+            
+        </div>
+        <div class="capa" id="capa3">
+            <img src="./paginas/inicio/img/agua.png" alt="">
+            <img class="ultimo" src="./paginas/inicio/img/agua.png" alt="">
+
+        </div>
+        
+    </main>
+    <script src="main.js"></script>
+</body>
+</html>

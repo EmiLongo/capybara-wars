@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="./login.css">
+    <title>Login Usuario</title>
+</head>
+<body>
+    <div class="selector">
+        <div class="selector-izq selector-activo">
+            <div class="titulo-login cont-activo">
+                <h2 class="texto-activo">Login</h2>
+            </div>
+            <h3>¿Ya tienes cuenta?</h3>
+        </div>
+        <div class="selector-der">
+            <div class="titulo-registro">
+                <h2>Registro</h2>
+            </div>
+            <h3>Crea tu cuenta</h3>
+        </div>
+    </div>
+    <div class="forms">
+        <img class="pergamino" src="./pergamino.png" alt="">
+        <div id="login" class="form-activo">
+            <form>
+                <div>   
+                    <div class="form-group">
+                        <div><label for="email-login">Email</label></div>
+                        <input type="email" id="email-login" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <div><label for="password-login">Password</label></div>
+                        <input type="password" id="password-login" name="password" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <!-- este boton está desconectado del formulario -->
+                    <button id="login-btn"  type="button">Inicia Sesión</button>
+                    <!-- <button id="login-btn" type="submit">Inicia Sesión</button> -->
+                </div>
+                <!-- falta devolver mensaje de error de conexion  -->
+            </form>
+        </div>
+        <div id="registro">
+            <form>
+                <div>
+                    <div class="form-group">
+                        <div><label for="nombre-usuario">Nombre de Usuario</label></div>
+                        <input type="text" id="nombre-usuario" name="nombre-usuario" required>
+                    </div>
+                    <div class="form-group">
+                        <div><label for="email">Email</label></div>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <div><label for="password">Password</label></div>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <!-- este boton está desconectado del formulario -->
+                    <button id="registro-btn" type="button">Registrate</button>
+                    <!-- <button id="registro-btn" type="submit">Registrate</button> -->
+                </div>
+                <!-- falta devolver mensaje de error de conexion -->
+            </form>
+        </div>
+
+    </div>
+    <script src="./login.js"></script>
+</body>
+</html>
