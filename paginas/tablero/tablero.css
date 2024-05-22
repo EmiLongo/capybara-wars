@@ -6,6 +6,24 @@ body{
         margin: 0;
         overflow: hidden;
         display: flex;
+        #fichas-fijas{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100dvw;
+            height: 100dvh;
+            z-index: 0;
+            .ficha-div{
+                padding: 0.5em;
+                z-index: 10;
+                /* .img-rotated{
+
+                }
+                .img-norotated{
+
+                } */
+            }
+        }
         .izquierda{
             position: relative;
         }
@@ -46,7 +64,8 @@ body{
         }
         .izq-arriba{
             display: flex;
-            align-content: center;
+            align-items: center;
+            gap: 2rem;
         }
         .indicaciones{
             width: 25dvw;
@@ -68,10 +87,16 @@ body{
             justify-content: center;
         }
         .elementos{
+            position: relative;
             display: flex;
             flex-direction: row-reverse;
             align-items: center;
             gap: 2dvw;
+            #girar{
+                position: absolute;
+                bottom: 0;
+                right: 0;
+            }
             .x1{
                 margin-top: 1em;
             }            
@@ -106,7 +131,8 @@ body{
                 filter: drop-shadow(5px 5px 15px #d1cccc);
             }
         }
-        #tablero{
+        #tablero-fondo{
+            opacity: 0.8;
             position: absolute;
             right: 5dvw;
             z-index: 3;
@@ -116,9 +142,26 @@ body{
             div{
                 width: 5dvw;
                 aspect-ratio: 1/1;
-                background-image: url(./img/cuadrado.png);
                 background-size: cover;
+                background-image: url(./img/cuadrado.png);
             }
+        }
+        #tablero{
+            position: absolute;
+            right: 5dvw;
+            z-index: 4;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            div{
+                width: 5dvw;
+                aspect-ratio: 1/1;
+                background-size: cover;
+                /* centrar la ficha */
+            }
+        }
+        #f1{
+
         }
     }
 
