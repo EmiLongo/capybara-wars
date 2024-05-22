@@ -5,15 +5,119 @@ body{
         padding: 0;
         margin: 0;
         overflow: hidden;
-
-        .arriba{
-            img{
-                
+        display: flex;
+        .izquierda{
+            position: relative;
+        }
+        .izquierda, .derecha{
+            display: flex;
+            align-items: center;
+            width: 50dvw;
+            height: 100dvh;
+            overflow: hidden;
+            
+            .fondo{
+                width: 100%;
+                height: 100%;
+                z-index: 1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                img{
+                    aspect-ratio:initial;
+                    min-width: 100%;
+                    min-height: 100%;
+                    opacity: 0.8;
+                }
             }
         }
-        .abajo{
+        .izq-contenido{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50dvw;
+            height: 100dvh;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+
+        }
+        .izq-arriba{
+            display: flex;
+            align-content: center;
+        }
+        .indicaciones{
+            width: 25dvw;
+            filter: drop-shadow(1px 1px 5px #d1cccc);
+        }
+        .acomodar{
+            background-color: #379237;
+            border-radius: 50px;
+            font-family: 'Cocomelon', sans-serif;
+            font-weight: 400;
+            font-size: 1.5em;
+            text-align: center;
+            color: #f1f1f1;
+            cursor: pointer;
+            width: 13dvw;
+            height: 10dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .elementos{
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: center;
+            gap: 2dvw;
+            .x1{
+                margin-top: 1em;
+            }            
+        }
+        .proximo-container{
+            color: #f1f1f1;
+            font-weight: 200;
+            font-size: 2em;
+            text-align: center;
+            .proximo{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 15dvw;
+                aspect-ratio: 1/1;
+                background-image: url(./img/cuadrado.png);
+                background-size: cover;
+                img{
+                    max-height: 10dvw;
+                    transition: all 0.3s ease-out;
+                }
+                .img-girada{
+                    transform: rotate(90deg);
+                }
+            }
+        }
+        .fichas{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             img{
-                
+                filter: drop-shadow(5px 5px 15px #d1cccc);
+            }
+        }
+        #tablero{
+            position: absolute;
+            right: 5dvw;
+            z-index: 3;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            div{
+                width: 5dvw;
+                aspect-ratio: 1/1;
+                background-image: url(./img/cuadrado.png);
+                background-size: cover;
             }
         }
     }
