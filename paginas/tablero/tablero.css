@@ -28,6 +28,12 @@ body{
             position: absolute;
             transition: all 0.3s ease-out;
         }
+        .colocado-girado{
+            transform-origin: top left;
+            transform: rotate(-90deg) translate(-100%, 0);
+            position: absolute;
+            transition: all 0.3s ease-out;
+        }
         .colocando{
             position: absolute;
             z-index: 5;
@@ -187,7 +193,11 @@ body{
             img{
                 filter: drop-shadow(5px 5px 15px #d1cccc);
             }
+            .activo{
+                animation: parpadeandoAnimation 3s ease-in-out infinite;
+            }
         }
+
         #tablero-fondo{
             opacity: 0.8;
             position: absolute;

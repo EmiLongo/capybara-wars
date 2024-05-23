@@ -15,30 +15,45 @@ const piezas = [
 const piezasAcomodadas = []
 const tableroDiv = document.getElementsByClassName('tablero-div')
 let tableroIslaArray = Array(64).fill('')
-let posicionSinFijar = {"nombre":'' , "largo":'' , "girado":false , "posicion":''}
+let posicionSinFijar = {"nombre":'' , "largo":'' , "girado":'' , "posicion":''}
+const ficha = document.getElementsByClassName("ficha")
 
 // detecta el primer disponible para la proxima pieza
 function primerDisponible(tableroArray, indicePiezas) { //devuelve la posición disponible, igualar a variable
+    //reset a girar
+    girar = false
+    proximoImg.classList.remove('img-girada')
+
+    //efecto seleccionado en fichas disponibles
+    // ficha[indicePiezas].classList.add('activo')
+
     posicionSinFijar.nombre = piezas[indicePiezas].nombre
     posicionSinFijar.largo = piezas[indicePiezas].largo
-
+    posicionSinFijar.girado = girar
+    proximoImg.src = piezas[indicePiezas].url
+    
     for (let i = 0; i < tableroArray.length; i++) {
         if (tableroArray[i] == '') {
             if (piezas[indicePiezas].largo == 1) {
+                posicionSinFijar.posicion = i
                 return i;
             } else if (piezas[indicePiezas].largo == 2 && tableroArray[i+8] == '') {
+                posicionSinFijar.posicion = i
                 return i;
             } else if (piezas[indicePiezas].largo == 3 && tableroArray[i+8] == '' && tableroArray[i+16] == '') {
+                posicionSinFijar.posicion = i
+                console.log('posicionSinFijar:',posicionSinFijar)
                 return i;
             }
         }
     }
+    console.log('posicionSinFijar:',posicionSinFijar)
     return -1; // Si no se encuentra una posición válida, muy raro
 }
 
 const colocandoOK = document.getElementById('colocandoOK')
 // generar la imagen
-function generaImagen (tableroClass, indicePiezas, disponible) {
+function generaImagen (tableroClass, indicePiezas) {
     let tablero = document.getElementsByClassName(tableroClass)
     const div = document.createElement('div')
     div.id = piezas[indicePiezas].nombre
@@ -55,7 +70,7 @@ function generaImagen (tableroClass, indicePiezas, disponible) {
     colocandoOK.className = 'activo'
     div.appendChild(img)
     div.appendChild(colocandoOK)
-    tablero[disponible].appendChild(div)
+    tablero[posicionSinFijar.posicion].appendChild(div)
 }
 function redibujar (divId){
     const div = document.getElementById(divId)
@@ -75,11 +90,11 @@ function moverIzq (posicionSinFijar, tableroArray) {
                 redibujar (posicionSinFijar.nombre)
             }
         }
-        if (!posicionSinFijar.girado && posicionSinFijar.largo == 2 && tableroArray[(posicionSinFijar.posicion + 7)] == '') {
+        if (!posicionSinFijar.girado && posicionSinFijar.largo == 2 && tableroArray[(posicionSinFijar.posicion - 1)] == '' && tableroArray[(posicionSinFijar.posicion + 7)] == '') {
             posicionSinFijar.posicion--
             redibujar (posicionSinFijar.nombre)
         }
-        if (!posicionSinFijar.girado && posicionSinFijar.largo == 3 && tableroArray[(posicionSinFijar.posicion + 7)] == '' && tableroArray[(posicionSinFijar.posicion + 15)] == '') {
+        if (!posicionSinFijar.girado && posicionSinFijar.largo == 3 && tableroArray[(posicionSinFijar.posicion - 1)] == '' && tableroArray[(posicionSinFijar.posicion + 7)] == '' && tableroArray[(posicionSinFijar.posicion + 15)] == '') {
             posicionSinFijar.posicion--
             redibujar (posicionSinFijar.nombre)
         }
@@ -100,11 +115,11 @@ function moverDer (posicionSinFijar, tableroArray) {
                 redibujar (posicionSinFijar.nombre)
             }
         }
-        if (!posicionSinFijar.girado && posicionSinFijar.largo == 2 && tableroArray[(posicionSinFijar.posicion + 9)] == '') {
+        if (!posicionSinFijar.girado && posicionSinFijar.largo == 2 && tableroArray[(posicionSinFijar.posicion + 1)] == '' && tableroArray[(posicionSinFijar.posicion + 9)] == '') {
             posicionSinFijar.posicion++
             redibujar (posicionSinFijar.nombre)
         } 
-        if (!posicionSinFijar.girado && posicionSinFijar.largo == 3 && tableroArray[(posicionSinFijar.posicion + 9)] == '' && tableroArray[(posicionSinFijar.posicion + 17)] == '') {
+        if (!posicionSinFijar.girado && posicionSinFijar.largo == 3 && tableroArray[(posicionSinFijar.posicion + 1)] == '' && tableroArray[(posicionSinFijar.posicion + 9)] == '' && tableroArray[(posicionSinFijar.posicion + 17)] == '') {
             posicionSinFijar.posicion++
             redibujar (posicionSinFijar.nombre)
         } 
@@ -221,13 +236,44 @@ document.addEventListener('keydown', (event) => {
             moverAba(posicionSinFijar, tableroIslaArray);
             break;
         case 'Enter':
-            moverAba(posicionSinFijar, tableroIslaArray);
+            fijar();
             break;
         case ' ':
             girarPieza();
             break;
     }
 });
+//click izquierdo
+const tableroDivArray = Array.from(tableroDiv);
+
+tableroDivArray.forEach((element, indice) => {
+    element.addEventListener('click', () => {
+        if(posicionSinFijar.largo == 1 && tableroIslaArray[indice] == ''){
+            posicionSinFijar.posicion = indice 
+            redibujar (posicionSinFijar.nombre)
+        }
+        if(posicionSinFijar.largo == 2){
+            if(indice %8 < 7 && posicionSinFijar.girado && tableroIslaArray[indice] == '' && tableroIslaArray[indice + 1] == ''){
+                posicionSinFijar.posicion = indice 
+                redibujar (posicionSinFijar.nombre)
+            } else if(indice < 56 && !posicionSinFijar.girado && tableroIslaArray[indice] == '' && tableroIslaArray[indice + 8] == ''){
+                posicionSinFijar.posicion = indice 
+                redibujar (posicionSinFijar.nombre)
+            }
+        }
+        if(posicionSinFijar.largo == 3){
+            if(indice %8 < 6 && posicionSinFijar.girado && tableroIslaArray[indice] == '' && tableroIslaArray[indice + 1] == '' && tableroIslaArray[indice + 2] == ''){
+                posicionSinFijar.posicion = indice 
+                redibujar (posicionSinFijar.nombre)
+            } else if(indice < 48 && !posicionSinFijar.girado && tableroIslaArray[indice] == '' && tableroIslaArray[indice + 8] == '' && tableroIslaArray[indice + 16] == ''){
+                posicionSinFijar.posicion = indice 
+                redibujar (posicionSinFijar.nombre)
+            }
+        }
+    })
+})
+
+// click derecho
 document.addEventListener('contextmenu', (event) => {
     event.preventDefault(); 
     girarPieza();
@@ -256,24 +302,36 @@ function fijar() {
             tableroIslaArray[posicionSinFijar.posicion + 16] = 'X'
          }
     }
-    piezasAcomodadas.push(posicionSinFijar)
-    console.log(piezasAcomodadas)
-    colocandoOK.classList.remove = 'activo'
+    piezasAcomodadas.push({ ...posicionSinFijar });
+    console.log('piezasAcomodadas:' , piezasAcomodadas)
+    console.log('tableroIslaArray: ',tableroIslaArray)
+    //reset
+    colocandoOK.classList.remove('activo')
     const fichasFijas = document.getElementById('fichas-fijas')
     fichasFijas.appendChild(colocandoOK)
     const imgFijar = document.getElementById(`${posicionSinFijar.nombre}-img`)
-    imgFijar.classList.add = 'colocado'
-    imgFijar.classList.remove = 'colocando'
+    let numero = posicionSinFijar.length
+    // ficha[posicionSinFijar.length].classList.remove('activo')
+    if(posicionSinFijar.girado){
+        imgFijar.className = 'colocado-girado'
+    } else {
+        imgFijar.className = 'colocado'
+    }
+
     if(piezasAcomodadas.length != piezas.length){
         comienzaCiclo()
+    } else {
+        // guardar el tablero en localstorage, en futuro en la bbdd
+        localStorage.setItem("tableroIslaArray", JSON.stringify(tableroIslaArray));
+        localStorage.setItem("piezasAcomodadas", JSON.stringify(piezasAcomodadas));
+        // ejecutar el juego
     }
 }
 
 function comienzaCiclo(){
 
-    let disponible1 = primerDisponible(tableroIslaArray, piezasAcomodadas.length)
-    posicionSinFijar.posicion = disponible1
-    generaImagen('tablero-div', piezasAcomodadas.length, disponible1)
+    primerDisponible(tableroIslaArray, piezasAcomodadas.length)
+    generaImagen('tablero-div', piezasAcomodadas.length)
 } 
 
 
