@@ -14,6 +14,7 @@ body {
     overflow: hidden;
     background-image: linear-gradient(to right top, #f6eaa5, #f8edaf, #f9f0b9, #fbf2c2, #fcf5cc, #fdf5d0, #fdf4d4, #fdf4d8, #fbf0d8, #f9ecd8, #f6e8d8, #f2e5d8);
     font-family: 'Cocomelon', sans-serif;
+    font-weight: 400;
 
     .pantalla{
       display: none;
