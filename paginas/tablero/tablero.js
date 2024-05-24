@@ -15,6 +15,7 @@ const piezas = [
 const piezasAcomodadas = []
 const tableroDiv = document.getElementsByClassName('tablero-div')
 let tableroIslaArray = Array(64).fill('')
+let tableroPirataArray = Array(64).fill('')
 let posicionSinFijar = {"nombre":'' , "largo":'' , "girado":'' , "posicion":''}
 const ficha = document.getElementsByClassName("ficha")
 
@@ -27,9 +28,12 @@ function primerDisponible(tableroArray, indicePiezas) { //devuelve la posición 
     //efecto seleccionado en fichas disponibles
     // ficha[indicePiezas].classList.add('activo')
 
-    posicionSinFijar.nombre = piezas[indicePiezas].nombre
-    posicionSinFijar.largo = piezas[indicePiezas].largo
-    posicionSinFijar.girado = girar
+    posicionSinFijar = {
+        nombre : piezas[indicePiezas].nombre,
+        largo: piezas[indicePiezas].largo,
+        girado: girar
+    };
+
     proximoImg.src = piezas[indicePiezas].url
     
     for (let i = 0; i < tableroArray.length; i++) {
@@ -42,12 +46,10 @@ function primerDisponible(tableroArray, indicePiezas) { //devuelve la posición 
                 return i;
             } else if (piezas[indicePiezas].largo == 3 && tableroArray[i+8] == '' && tableroArray[i+16] == '') {
                 posicionSinFijar.posicion = i
-                console.log('posicionSinFijar:',posicionSinFijar)
                 return i;
             }
         }
     }
-    console.log('posicionSinFijar:',posicionSinFijar)
     return -1; // Si no se encuentra una posición válida, muy raro
 }
 
@@ -64,9 +66,6 @@ function generaImagen (tableroClass, indicePiezas) {
     const heightImg = piezas[indicePiezas].largo * 5
     img.style.height = `${heightImg}dvw`
     img.style.width = '5dvw'
-    // const imgOk = document.createElement('img')
-    // imgOk.src = './img/ok.png'
-    // imgOk.id = 'colocandoOK'
     colocandoOK.className = 'activo'
     div.appendChild(img)
     div.appendChild(colocandoOK)
@@ -236,7 +235,7 @@ document.addEventListener('keydown', (event) => {
             moverAba(posicionSinFijar, tableroIslaArray);
             break;
         case 'Enter':
-            fijar();
+            fijar(piezasAcomodadas, tableroIslaArray);
             break;
         case ' ':
             girarPieza();
@@ -246,32 +245,40 @@ document.addEventListener('keydown', (event) => {
 //click izquierdo
 const tableroDivArray = Array.from(tableroDiv);
 
+function validar(indice, piezasAcomodadas, tableroArray) {
+    if(piezasAcomodadas.some(pieza => pieza.posicion == indice)){return false}
+    
+    if (posicionSinFijar.largo == 1 && tableroArray[indice] != 'X') {
+        return true;
+    }
+    if (posicionSinFijar.largo == 2) {
+        if (indice % 8 < 7 && posicionSinFijar.girado && tableroArray[indice] != 'X' && tableroArray[indice + 1] != 'X') {
+            return true;
+        } else if (indice < 56 && !posicionSinFijar.girado && tableroArray[indice] != 'X' && tableroArray[indice + 8] != 'X') {
+            return true;
+        }
+    }
+    if (posicionSinFijar.largo == 3) {
+        if (indice % 8 < 6 && posicionSinFijar.girado && tableroArray[indice] != 'X' && tableroArray[indice + 1] != 'X' && tableroArray[indice + 2] != 'X') {
+            return true;
+        } else if (indice < 48 && !posicionSinFijar.girado && tableroArray[indice] != 'X' && tableroArray[indice + 8] != 'X' && tableroArray[indice + 16] != 'X') {
+            return true;
+        }
+    }
+    return false;
+}
+
 tableroDivArray.forEach((element, indice) => {
     element.addEventListener('click', () => {
-        if(posicionSinFijar.largo == 1 && tableroIslaArray[indice] == ''){
-            posicionSinFijar.posicion = indice 
-            redibujar (posicionSinFijar.nombre)
+        const isValido = validar(indice, piezasAcomodadas, tableroIslaArray);
+        if(isValido){
+            posicionSinFijar.posicion = indice;
+            redibujar(posicionSinFijar.nombre)
         }
-        if(posicionSinFijar.largo == 2){
-            if(indice %8 < 7 && posicionSinFijar.girado && tableroIslaArray[indice] == '' && tableroIslaArray[indice + 1] == ''){
-                posicionSinFijar.posicion = indice 
-                redibujar (posicionSinFijar.nombre)
-            } else if(indice < 56 && !posicionSinFijar.girado && tableroIslaArray[indice] == '' && tableroIslaArray[indice + 8] == ''){
-                posicionSinFijar.posicion = indice 
-                redibujar (posicionSinFijar.nombre)
-            }
-        }
-        if(posicionSinFijar.largo == 3){
-            if(indice %8 < 6 && posicionSinFijar.girado && tableroIslaArray[indice] == '' && tableroIslaArray[indice + 1] == '' && tableroIslaArray[indice + 2] == ''){
-                posicionSinFijar.posicion = indice 
-                redibujar (posicionSinFijar.nombre)
-            } else if(indice < 48 && !posicionSinFijar.girado && tableroIslaArray[indice] == '' && tableroIslaArray[indice + 8] == '' && tableroIslaArray[indice + 16] == ''){
-                posicionSinFijar.posicion = indice 
-                redibujar (posicionSinFijar.nombre)
-            }
-        }
-    })
-})
+
+    });
+});
+
 
 // click derecho
 document.addEventListener('contextmenu', (event) => {
@@ -279,10 +286,7 @@ document.addEventListener('contextmenu', (event) => {
     girarPieza();
 });
 
-
-colocandoOK.addEventListener('click', fijar)
-// fijarla y guardar su ubicacion
-function fijar() {
+function actualizarTableros (piezasAcomodadas, tableroIslaArray){
     // actualizar
     tableroIslaArray[posicionSinFijar.posicion] = 'X'
     if(posicionSinFijar.largo == 2){
@@ -303,8 +307,14 @@ function fijar() {
          }
     }
     piezasAcomodadas.push({ ...posicionSinFijar });
-    console.log('piezasAcomodadas:' , piezasAcomodadas)
-    console.log('tableroIslaArray: ',tableroIslaArray)
+}
+
+
+colocandoOK.addEventListener('click', ()=>fijar(piezasAcomodadas, tableroIslaArray))
+// fijarla y guardar su ubicacion
+function fijar(piezasAcomodadas, tableroIslaArray) {
+
+    actualizarTableros(piezasAcomodadas, tableroIslaArray)
     //reset
     colocandoOK.classList.remove('activo')
     const fichasFijas = document.getElementById('fichas-fijas')
@@ -322,8 +332,7 @@ function fijar() {
         comienzaCiclo()
     } else {
         // guardar el tablero en localstorage, en futuro en la bbdd
-        localStorage.setItem("tableroIslaArray", JSON.stringify(tableroIslaArray));
-        localStorage.setItem("piezasAcomodadas", JSON.stringify(piezasAcomodadas));
+        finalizaCiclo()
         // ejecutar el juego
     }
 }
@@ -335,15 +344,77 @@ function comienzaCiclo(){
 } 
 
 
+function finalizaCicloAutomatico(){
+    //termina tablero Isla
+    generarAutomatico(piezasAcomodadas, tableroIslaArray)
+    localStorage.setItem("piezasIslaAcomodadas", JSON.stringify(piezasAcomodadas));
+    localStorage.setItem("tableroIslaArray", JSON.stringify(tableroIslaArray));
+    console.log('piezasIslaAcomodadas:' , piezasAcomodadas)
+    console.log('Tablero Isla Array: ', tableroIslaArray);
+    // arma tablero pirata
+    armarPirata()
 
 
+    // ejecutar el juego
+    window.location.href = '../juego/juego.html'
+}
+function finalizaCiclo(){
+    localStorage.setItem("piezasIslaAcomodadas", JSON.stringify(piezasAcomodadas));
+    localStorage.setItem("tableroIslaArray", JSON.stringify(tableroIslaArray));
+    console.log('piezasIslaAcomodadas:' , piezasAcomodadas)
+    console.log('Tablero Isla Array: ', tableroIslaArray);
+// armar el tablero pirata
+    armarPirata()
 
-
-
-//  borrar colocandoOK
-// cambiar class colocando por colocado
-// cambiar el src #proximo-img
-// pasar a la siguiente
+    // ejecutar el juego
+    window.location.href = '../juego/juego.html'
+}
 
  //=================  Ejecucion ================================================== 
  comienzaCiclo()
+
+
+
+
+
+ //================= Modo Automatico =============================================
+ const acomodar = document.getElementById('acomodar')
+ acomodar.addEventListener('click', finalizaCicloAutomatico)
+ function generarAutomatico(piezasAcomodadas, tableroIslaArray) {
+    while(piezasAcomodadas.length != piezas.length){
+        let posicionValida = false;
+        let posicion = 0;
+        let indice = piezasAcomodadas.length
+        posicionSinFijar = {
+            nombre: piezas[indice].nombre,
+            largo: piezas[indice].largo,
+        };
+        
+        while (!posicionValida) {
+            girar = Math.random() < 0.5;
+            posicion = Math.floor(Math.random() * 64);
+            if (validar(posicion, piezasAcomodadas, tableroIslaArray)) {
+                posicionValida = true;
+            }
+        }
+
+        posicionSinFijar = {
+            ...posicionSinFijar,
+            girado: girar,
+            posicion: posicion
+        };
+        console.log(posicionSinFijar)
+
+        actualizarTableros(piezasAcomodadas, tableroIslaArray)
+    }
+}
+// armar el tablero pirata
+function armarPirata (){
+    const piezasPirataAcomodadas = []
+    generarAutomatico(piezasPirataAcomodadas, tableroPirataArray)
+
+    localStorage.setItem("tableroPirataArray", JSON.stringify(tableroPirataArray));
+    localStorage.setItem("piezasPirataAcomodadas", JSON.stringify(piezasPirataAcomodadas));
+    console.log('tableroPirataArray:',tableroPirataArray)
+    console.log('piezasPirataAcomodadas:',piezasPirataAcomodadas)
+}

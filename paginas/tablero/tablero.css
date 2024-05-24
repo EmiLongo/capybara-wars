@@ -103,7 +103,7 @@ body{
             width: 25dvw;
             filter: drop-shadow(1px 1px 5px #d1cccc);
         }
-        .acomodar{
+        #acomodar{
             color: #f1f1f1;
             font-weight: 200;
             font-size: 1.3em;
@@ -236,18 +236,18 @@ body{
 
 @keyframes parpadeandoAnimation {
     0% {
-      opacity: 1;
+      opacity: 0.9;
     }
     /* 35% {
         opacity: .5;
       } */
     50% {
-        opacity: 0;
+        opacity: 0.5;
       }
     /* 65% {
     opacity: .5;
     } */
     100% {
-        opacity: 1;
+        opacity: 0.9;
     }
   }
