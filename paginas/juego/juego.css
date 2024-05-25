@@ -40,19 +40,61 @@ body{
                 filter: drop-shadow(1px 1px 5px #d1cccc);
             }
         }
-        #img-OK{
+        /* #img-OK-izq{
             width: 40px;
             height: 40px;
             position: relative;
-            left: -20px;
+            right: 20px;
             top: -20px;
             z-index: -1;
 
         }
-        #img-OK.activo{
+        #img-OK-izq.activo{
             z-index: 6;
+        } */
+        .colocado{
+            position: absolute;
+            transition: all 0.3s ease-out;
         }
-
+        .colocado-girado{
+            transform-origin: top left;
+            transform: rotate(-90deg) translate(-100%, 0);
+            position: absolute;
+            transition: all 0.3s ease-out;
+        }
+        #tablero-isla-fondo,
+        #tablero-pirata-fondo{
+            opacity: 0.8;
+            position: absolute;
+            right: 5dvw;
+            z-index: 3;
+            display: grid;
+            grid-template-columns: repeat(8, 5dvw);
+            grid-template-rows: repeat(8, 5dvw);
+            div{
+                width: 5dvw;
+                aspect-ratio: 1/1;
+                background-size: cover;
+                background-image: url(../tablero/img/cuadrado.png);
+            }
+        }
+        #tablero-isla,
+        #tablero-pirata{
+            position: absolute;
+            right: 5dvw;
+            z-index: 4;
+            display: grid;
+            grid-template-columns: repeat(8, 5dvw);
+            grid-template-rows: repeat(8, 5dvw);
+            div{
+                width: 5dvw;
+                aspect-ratio: 1/1;
+                background-size: cover;
+            }
+        }
+        #tablero-pirata div:hover{
+            background-color: rgba(0, 0, 255, 0.1);
+        }
 
 
 
@@ -80,16 +122,7 @@ body{
             align-items: center;
             gap: 2rem;
         }
-        .colocado{
-            position: absolute;
-            transition: all 0.3s ease-out;
-        }
-        .colocado-girado{
-            transform-origin: top left;
-            transform: rotate(-90deg) translate(-100%, 0);
-            position: absolute;
-            transition: all 0.3s ease-out;
-        }
+
         .colocando{
             position: absolute;
             z-index: 5;
@@ -127,36 +160,7 @@ body{
             }
         }
 
-        #tablero-isla-fondo,
-        #tablero-pirata-fondo{
-            opacity: 0.8;
-            position: absolute;
-            right: 5dvw;
-            z-index: 3;
-            display: grid;
-            grid-template-columns: repeat(8, 5dvw);
-            grid-template-rows: repeat(8, 5dvw);
-            div{
-                width: 5dvw;
-                aspect-ratio: 1/1;
-                background-size: cover;
-                background-image: url(../tablero/img/cuadrado.png);
-            }
-        }
-        #tablero-isla,
-        #tablero-pirata{
-            position: absolute;
-            right: 5dvw;
-            z-index: 4;
-            display: grid;
-            grid-template-columns: repeat(8, 5dvw);
-            grid-template-rows: repeat(8, 5dvw);
-            div{
-                width: 5dvw;
-                aspect-ratio: 1/1;
-                background-size: cover;
-            }
-        }
+
     }
 
 }

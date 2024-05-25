@@ -1,17 +1,4 @@
-const piezas = [
-    { "nombre": "ficha1", "url": "./img/x3.png" ,"largo": 3},
-    { "nombre": "ficha2", "url": "./img/x3.png" ,"largo": 3},
-    { "nombre": "ficha3", "url": "./img/x3.png" ,"largo": 3},
-    { "nombre": "ficha4", "url": "./img/x2.png" ,"largo": 2},
-    { "nombre": "ficha5", "url": "./img/x2.png" ,"largo": 2},
-    { "nombre": "ficha6", "url": "./img/x2.png" ,"largo": 2},
-    { "nombre": "ficha7", "url": "./img/x2.png" ,"largo": 2},
-    { "nombre": "ficha8", "url": "./img/x1.png" ,"largo": 1},
-    { "nombre": "ficha9", "url": "./img/x1.png" ,"largo": 1},
-    { "nombre": "ficha10", "url": "./img/x1.png" ,"largo": 1 },
-    { "nombre": "ficha11", "url": "./img/x1.png" ,"largo": 1 },
-    { "nombre": "ficha12", "url": "./img/x1.png" ,"largo": 1 }
-]
+import { piezas } from "./helpers.js"
 const piezasAcomodadas = []
 const tableroDiv = document.getElementsByClassName('tablero-div')
 let tableroIslaArray = Array(64).fill('')
@@ -80,7 +67,6 @@ function redibujar (divId){
 function moverIzq (posicionSinFijar, tableroArray) {
     const posicion = posicionSinFijar.posicion
     let resto = posicion % 8
-    console.log('resto:', resto)
             
     if(resto != 0){
         if(posicionSinFijar.girado || posicionSinFijar.largo == 1){
@@ -101,6 +87,7 @@ function moverIzq (posicionSinFijar, tableroArray) {
     }
 }
 function moverDer (posicionSinFijar, tableroArray) {
+    let tope = 0
     const posicion = posicionSinFijar.posicion
     let resto = posicion % 8
     if(!posicionSinFijar.girado || posicionSinFijar.largo == 1){ tope = 7}
@@ -146,7 +133,6 @@ function moverArr (posicionSinFijar, tableroArray) {
 }
 function moverAba (posicionSinFijar, tableroArray) {
     const posicion = posicionSinFijar.posicion
-    console.log('posicion: ',posicion)
     let tope = 0
     if(posicionSinFijar.largo == 3) { tope = 40}
     if(posicionSinFijar.largo == 2) { tope = 48}
@@ -156,18 +142,15 @@ function moverAba (posicionSinFijar, tableroArray) {
             if(tableroArray[posicion+8] == ''){
                 posicionSinFijar.posicion = posicionSinFijar.posicion + 8 
                 redibujar (posicionSinFijar.nombre)
-                console.log('1er if ',posicion)  
             }
         }
         if (posicionSinFijar.girado && posicionSinFijar.largo == 2 && tableroArray[(posicionSinFijar.posicion + 8)] == ''&& tableroArray[(posicionSinFijar.posicion + 9)] == '') {
             posicionSinFijar.posicion = posicionSinFijar.posicion + 8 
             redibujar (posicionSinFijar.nombre)
-            console.log('2do if: ',posicion)  
         } 
         if (posicionSinFijar.girado && posicionSinFijar.largo == 3 && tableroArray[(posicionSinFijar.posicion + 8)] == '' && tableroArray[(posicionSinFijar.posicion + 9)] == '' && tableroArray[(posicionSinFijar.posicion + 10)] == '') {
             posicionSinFijar.posicion = posicionSinFijar.posicion + 8 
             redibujar (posicionSinFijar.nombre)
-            console.log('3er if: ',posicion)  
         }
         
     }
@@ -204,7 +187,6 @@ function girarPieza () {
             girar = !girar
             posicionSinFijar.girado = girar
             const imgGirar = document.getElementById(`${posicionSinFijar.nombre}-img`)
-            console.log(imgGirar)
             imgGirar.classList.toggle('colocando-girado')
         }
     }
@@ -349,8 +331,6 @@ function finalizaCicloAutomatico(){
     generarAutomatico(piezasAcomodadas, tableroIslaArray)
     localStorage.setItem("piezasIslaAcomodadas", JSON.stringify(piezasAcomodadas));
     localStorage.setItem("tableroIslaArray", JSON.stringify(tableroIslaArray));
-    console.log('piezasIslaAcomodadas:' , piezasAcomodadas)
-    console.log('Tablero Isla Array: ', tableroIslaArray);
     // arma tablero pirata
     armarPirata()
 
@@ -361,8 +341,6 @@ function finalizaCicloAutomatico(){
 function finalizaCiclo(){
     localStorage.setItem("piezasIslaAcomodadas", JSON.stringify(piezasAcomodadas));
     localStorage.setItem("tableroIslaArray", JSON.stringify(tableroIslaArray));
-    console.log('piezasIslaAcomodadas:' , piezasAcomodadas)
-    console.log('Tablero Isla Array: ', tableroIslaArray);
 // armar el tablero pirata
     armarPirata()
 
@@ -403,8 +381,6 @@ function finalizaCiclo(){
             girado: girar,
             posicion: posicion
         };
-        console.log(posicionSinFijar)
-
         actualizarTableros(piezasAcomodadas, tableroIslaArray)
     }
 }
@@ -415,6 +391,4 @@ function armarPirata (){
 
     localStorage.setItem("tableroPirataArray", JSON.stringify(tableroPirataArray));
     localStorage.setItem("piezasPirataAcomodadas", JSON.stringify(piezasPirataAcomodadas));
-    console.log('tableroPirataArray:',tableroPirataArray)
-    console.log('piezasPirataAcomodadas:',piezasPirataAcomodadas)
 }
