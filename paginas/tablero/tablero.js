@@ -1,9 +1,9 @@
 import { piezas } from "./helpers.js"
-const piezasAcomodadas = []
+let piezasAcomodadas = []
 const tableroDiv = document.getElementsByClassName('tablero-div')
 let tableroIslaArray = Array(64).fill('')
 let tableroPirataArray = Array(64).fill('')
-let posicionSinFijar = {"nombre":'' , "largo":'' , "girado":'' , "posicion":''}
+let posicionSinFijar = {nombre:'' , largo:'' , girado:'' , posicion:'' , espacios:[]}
 const ficha = document.getElementsByClassName("ficha")
 
 // detecta el primer disponible para la proxima pieza
@@ -227,32 +227,61 @@ document.addEventListener('keydown', (event) => {
 //click izquierdo
 const tableroDivArray = Array.from(tableroDiv);
 
-function validar(indice, piezasAcomodadas, tableroArray) {
-    if(piezasAcomodadas.some(pieza => pieza.posicion == indice)){return false}
-    
-    if (posicionSinFijar.largo == 1 && tableroArray[indice] != 'X') {
-        return true;
-    }
+function validar(indice, piezasAcomodadas, girado) {
+    if(piezasAcomodadas.some(pieza => pieza.espacios.includes(indice))){return false}
     if (posicionSinFijar.largo == 2) {
-        if (indice % 8 < 7 && posicionSinFijar.girado && tableroArray[indice] != 'X' && tableroArray[indice + 1] != 'X') {
-            return true;
-        } else if (indice < 56 && !posicionSinFijar.girado && tableroArray[indice] != 'X' && tableroArray[indice + 8] != 'X') {
-            return true;
+        if(girado){
+            if(indice % 8 == 7){
+                return false
+            }
+            if(piezasAcomodadas.some(pieza => pieza.espacios.includes(indice+1))){return false}
+        } else {
+            if(indice > 55){
+                return false
+            }
+            if(piezasAcomodadas.some(pieza => pieza.espacios.includes(indice+8))){return false}
         }
     }
+    
     if (posicionSinFijar.largo == 3) {
-        if (indice % 8 < 6 && posicionSinFijar.girado && tableroArray[indice] != 'X' && tableroArray[indice + 1] != 'X' && tableroArray[indice + 2] != 'X') {
-            return true;
-        } else if (indice < 48 && !posicionSinFijar.girado && tableroArray[indice] != 'X' && tableroArray[indice + 8] != 'X' && tableroArray[indice + 16] != 'X') {
-            return true;
+        if(girado){
+            if(indice % 8 >= 6){
+                return false
+            }
+            if(piezasAcomodadas.some(pieza => pieza.espacios.includes(indice+1))){return false}
+            if(piezasAcomodadas.some(pieza => pieza.espacios.includes(indice+2))){return false}
+        } else {
+            if(indice > 47){
+                return false
+            }
+            if(piezasAcomodadas.some(pieza => pieza.espacios.includes(indice+8))){return false}
+            if(piezasAcomodadas.some(pieza => pieza.espacios.includes(indice+16))){return false}
         }
     }
-    return false;
+    
+    // if (posicionSinFijar.largo == 1 && tableroArray[indice] != 'X') {
+    //     return true;
+    // }
+    // if (posicionSinFijar.largo == 2) {
+    //     if (indice % 8 < 7 && posicionSinFijar.girado && tableroArray[indice] != 'X' && tableroArray[indice + 1] != 'X') {
+    //         return true;
+    //     } else if (indice < 56 && !posicionSinFijar.girado && tableroArray[indice] != 'X' && tableroArray[indice + 8] != 'X') {
+    //         return true;
+    //     }
+    // }
+    // if (posicionSinFijar.largo == 3) {
+    //     if (indice % 8 < 6 && posicionSinFijar.girado && tableroArray[indice] != 'X' && tableroArray[indice + 1] != 'X' && tableroArray[indice + 2] != 'X') {
+    //         return true;
+    //     } else if (indice < 48 && !posicionSinFijar.girado && tableroArray[indice] != 'X' && tableroArray[indice + 8] != 'X' && tableroArray[indice + 16] != 'X') {
+    //         return true;
+    //     }
+    // }
+    return true;
 }
 
 tableroDivArray.forEach((element, indice) => {
     element.addEventListener('click', () => {
-        const isValido = validar(indice, piezasAcomodadas, tableroIslaArray);
+        const isValido = validar(indice, piezasAcomodadas, posicionSinFijar.girado);
         if(isValido){
             posicionSinFijar.posicion = indice;
             redibujar(posicionSinFijar.nombre)
@@ -288,6 +317,26 @@ function actualizarTableros (piezasAcomodadas, tableroIslaArray){
             tableroIslaArray[posicionSinFijar.posicion + 16] = 'X'
          }
     }
+    let espaciosAux = []
+    if(posicionSinFijar.largo == 1){
+        espaciosAux = [posicionSinFijar.posicion]            
+    } else if(posicionSinFijar.largo == 2){
+        espaciosAux = 
+            [posicionSinFijar.posicion, 
+            posicionSinFijar.posicion + (posicionSinFijar.girado ? 1 : 8)];
+    } else if(posicionSinFijar.largo == 3){
+        espaciosAux = [
+            posicionSinFijar.posicion, 
+            posicionSinFijar.posicion + (posicionSinFijar.girado ? 1 : 8), 
+            posicionSinFijar.posicion + (posicionSinFijar.girado ? 2 : 16)
+        ];
+    }
+    posicionSinFijar = {
+        ...posicionSinFijar,
+        espacios: espaciosAux,
+        golpeados: []
+    };
+
     piezasAcomodadas.push({ ...posicionSinFijar });
 }
 
@@ -317,6 +366,8 @@ function fijar(piezasAcomodadas, tableroIslaArray) {
         finalizaCiclo()
         // ejecutar el juego
     }
+    console.log('piezasAcomodadas:', piezasAcomodadas)
+    console.log('tableroIslaArray:', tableroIslaArray)
 }
 
 function comienzaCiclo(){
@@ -369,18 +420,28 @@ function finalizaCiclo(){
         };
         
         while (!posicionValida) {
-            girar = Math.random() < 0.5;
+            girar = Math.random() < 0.5 ? true : false
             posicion = Math.floor(Math.random() * 64);
-            if (validar(posicion, piezasAcomodadas, tableroIslaArray)) {
+            if (validar(posicion, piezasAcomodadas, girar)) {
                 posicionValida = true;
             }
         }
-
+        let espaciosAux = []            
+        if(piezas[indice].largo == 1){
+            espaciosAux = [posicion]            
+        } else if(piezas[indice].largo == 2){
+            espaciosAux = [posicion, (girar ? posicion + 1 : posicion + 8)]
+        } else if(piezas[indice].largo == 3){
+            espaciosAux = [posicion, (girar ? posicion + 1 : posicion + 8), (girar ? posicion + 2 : posicion + 16)]
+        }
         posicionSinFijar = {
             ...posicionSinFijar,
             girado: girar,
-            posicion: posicion
+            posicion: posicion,
+            espacios: espaciosAux,
+            golpeados: []
         };
+        console.log('posicionSinFijar:',posicionSinFijar)
         actualizarTableros(piezasAcomodadas, tableroIslaArray)
     }
 }

@@ -23,7 +23,12 @@
         </div>
     </div>
     <div class="forms">
-        <img class="pergamino" src="./pergamino.png" alt="">
+        <picture class="pergamino">
+            <source srcset="./pergamino.webp" type="image/webp">
+            <source srcset="./pergamino.png" type="image/png">
+            <img class="pergamino" src="./pergamino.png" alt="">
+          </picture>
+        <!-- <img class="pergamino" src="./pergamino.webp" alt=""> -->
         <div id="login" class="form-activo">
             <form>
                 <div>   

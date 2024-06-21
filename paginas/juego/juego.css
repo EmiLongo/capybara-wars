@@ -66,28 +66,28 @@ body{
         #tablero-pirata-fondo{
             opacity: 0.8;
             position: absolute;
-            right: 5dvw;
+            right: 9dvw;
             z-index: 3;
             display: grid;
-            grid-template-columns: repeat(8, 5dvw);
-            grid-template-rows: repeat(8, 5dvw);
+            grid-template-columns: repeat(8, 4dvw);
+            grid-template-rows: repeat(8, 4dvw);
             div{
-                width: 5dvw;
+                width: 4dvw;
                 aspect-ratio: 1/1;
                 background-size: cover;
-                background-image: url(../tablero/img/cuadrado.png);
+                background-image: url(../tablero/img/cuadrado.webp);
             }
         }
         #tablero-isla,
         #tablero-pirata{
             position: absolute;
-            right: 5dvw;
+            right: 9dvw;
             z-index: 4;
             display: grid;
-            grid-template-columns: repeat(8, 5dvw);
-            grid-template-rows: repeat(8, 5dvw);
+            grid-template-columns: repeat(8, 4dvw);
+            grid-template-rows: repeat(8, 4dvw);
             div{
-                width: 5dvw;
+                width: 4dvw;
                 aspect-ratio: 1/1;
                 background-size: cover;
             }
@@ -122,47 +122,23 @@ body{
             align-items: center;
             gap: 2rem;
         }
-
-        .colocando{
+        #pausa-btn{
             position: absolute;
-            z-index: 5;
-            animation: parpadeandoAnimation 3s ease-in-out infinite;
-            transition: all 0.3s ease-out;
-        }
-        .colocando-girado{
-            transform-origin: top left;
-            transform: rotate(-90deg) translate(-100%, 0);
-        }
+            width: 6dvw;
+            aspect-ratio: 1/1;
+            z-index: 6;
+            top: 1em;
+            right: 1em;
 
-
-        .elementos{
-            position: relative;
-            display: flex;
-            flex-direction: row-reverse;
-            align-items: center;
-            gap: 5dvw;
-            /* .x1{
-                margin-top: 1em;
-            }             */
-        }
-        .fichas{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 1.5em;
-            text-align: center;
-            color: #f1f1f1;
             img{
-                filter: drop-shadow(5px 5px 15px #d1cccc);
-            }
-            .activo{
-                animation: parpadeandoAnimation 3s ease-in-out infinite;
+                width: 100%;
+                height: 100%;
             }
         }
-
-
+        #pausa-contenido{
+            
+        }
     }
-
 }
 
 @keyframes parpadeandoAnimation {
@@ -321,7 +297,7 @@ body{
                 width: 5dvw;
                 aspect-ratio: 1/1;
                 background-size: cover;
-                background-image: url(./img/cuadrado.png);
+                background-image: url(./img/cuadrado.webp);
             }
         }
         #tablero{

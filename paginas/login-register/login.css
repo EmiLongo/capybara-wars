@@ -29,10 +29,10 @@ body{
             border: none;
         }
         .titulo-login{
-            background-image: url('./tabla.png');
+            background-image: url('./tabla.webp');
         }
         .titulo-registro{
-            background-image: url('./tabla2.png');
+            background-image: url('./tabla2.webp');
         }
         .titulo-login,
         .titulo-registro{
