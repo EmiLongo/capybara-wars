@@ -1,0 +1,141 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  font-size: 14px;
+}
+.fondo {
+  width: 100%;
+  height: 100%;
+  background: rgba(254,249,217,1);
+  opacity: 1;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  overflow: hidden;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden; 
+}
+
+.img-fondo {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.overlay {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70%; 
+  height: 70%; 
+}
+
+.text{
+  position: absolute;
+  height: 90%; 
+  font-weight: semibold;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Sombra de texto para mejor legibilidad */
+  /* font-family: Baloo Bhaina; */
+  opacity: 1;
+  text-align: center;
+}
+.text-msg{
+  font-size: calc(16px + 2.5vw); 
+  color: #1f521f;
+}
+.text-score{
+  font-size: calc(16px + 1vw); 
+  color: #7c682f;
+
+}
+
+
+.marca-right{
+  position: absolute;
+  display: flex;
+  right: 22%;
+  bottom: 25%;
+  width: auto;
+  height: 15%;
+
+}
+
+.img-base{
+  max-width: 100%;
+  max-height: 90%;
+  width: auto;
+  height: auto;
+}
+
+.img-top{
+  width: auto;
+  height: 150%;
+}
+
+.msj-top{
+  position: absolute;
+  top: 25%;
+  width: auto;
+  height: 12%;
+}
+.overlay-centro{
+  display: flex;
+  align-items: center;
+  height: 30%;
+  gap: 2em;
+}
+.anim-left{
+  position: absolute;
+  left: 2%;
+  width: auto;
+  height: 50%;
+}
+
+.anim-right{
+  position: absolute;
+  right: 2%;
+  width: auto;
+  height: 50%;
+}
+
+.foot{
+  position: absolute;
+  bottom: -20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8em;
+  width: 70%; 
+  height: 70%; 
+}
+.boton{
+  /* position: absolute;
+  left: 30%;
+  bottom: 0%; */
+  width: auto;
+  height: 15%;
+}
+
+.msj-boton{
+  /* position: absolute;
+  right: 25%;
+  bottom: 3%; */
+  width: auto;
+  height: 10%;
+  font-size: calc(16px + 1.5vw);
+  color: #2e792e;
+  text-shadow: 2px 2px 2px rgb(85, 83, 83);
+}

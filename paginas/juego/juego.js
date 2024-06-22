@@ -3,10 +3,10 @@ const piezasIslaAcomodadas = JSON.parse(localStorage.getItem("piezasIslaAcomodad
 const tableroIslaArray = JSON.parse(localStorage.getItem("tableroIslaArray"));
 const piezasPirataAcomodadas = JSON.parse(localStorage.getItem("piezasPirataAcomodadas"));
 const tableroPirataArray = JSON.parse(localStorage.getItem("tableroPirataArray"));
-// console.log('piezasIslaAcomodadas:', piezasIslaAcomodadas)
-// console.log('tableroIslaArray:', tableroIslaArray)
-// console.log('piezasPirataAcomodadas:', piezasPirataAcomodadas)
-// console.log('tableroPirataArray:', tableroPirataArray)
+console.log('piezasIslaAcomodadas:', piezasIslaAcomodadas)
+console.log('tableroIslaArray:', tableroIslaArray)
+console.log('piezasPirataAcomodadas:', piezasPirataAcomodadas)
+console.log('tableroPirataArray:', tableroPirataArray)
 
 const tableroIslaFondo = document.getElementById('tablero-isla-fondo')
 const tableroIslaFondoDivs = tableroIslaFondo.getElementsByTagName('div')
@@ -60,6 +60,7 @@ Array.from(tableroPirataDivs).forEach((div, index) => {
         tirosNuestros.push(index);
 
         // Colocar la naranja
+        //animacion de cañon
 
         // Exploto la naranja y decide si pega o no pega
         if (tableroPirataArray[index] === 'X') {
@@ -73,24 +74,27 @@ Array.from(tableroPirataDivs).forEach((div, index) => {
                     // Eliminar el número del array espacios
                     piezasPirataAcomodadas[indiceEncontrado].espacios.splice(posicionEnEspacios, 1);
                     piezasPirataAcomodadas[indiceEncontrado].golpeados.push(index);
-                    console.log(`Se ha eliminado el número ${index} del array espacios en el objeto en el índice ${indiceEncontrado}.`);
                 }
             } else {
                 console.log(`El índice ${index} no se encuentra en ninguna pieza de piezasPirataAcomodadas.`);
             }
-            
-            // Imprimir el array para verificar el resultado
-            console.log(piezasPirataAcomodadas);
-            
+                        
             //verificar si hundio el barco
-            // borrar las otras imagenes y colocar la de hundido
             if(piezasPirataAcomodadas[indiceEncontrado].espacios.length == 0){
+                // borrar las otras imagenes y colocar la de hundido
                 if(piezasPirataAcomodadas[indiceEncontrado].golpeados.length != 0){
                     piezasPirataAcomodadas[indiceEncontrado].golpeados.forEach(element => {
                         tableroPirataDivs[element].innerHTML = '';
                     })
                 }
                 generaImagen (tableroPirataDivs, piezasPirataAcomodadas[indiceEncontrado], 'pirata')
+
+                // verificar si termino la partida
+                piezasPirataAcomodadas.espacios
+                const isTerminada = piezasPirataAcomodadas.every(pieza => Array.isArray(pieza.espacios) && pieza.espacios.length === 0);
+                if (isTerminada) {
+                window.location.href = '../cierre/has-ganado.html'
+                }
 
             } else {
                 const img = document.createElement('img');
@@ -114,40 +118,70 @@ Array.from(tableroPirataDivs).forEach((div, index) => {
         let posicion;
         do {
             posicion = Math.floor(Math.random() * 64);
-            console.log('posicion:', posicion)
-            console.log('tirosEnemigos:', tirosEnemigos)
-            
         } while (tirosEnemigos.includes(posicion));
-        
+        console.log('posicion:', posicion)
         // Agregar el disparo a los tiros enemigos
         // tirosEnemigos.push(...tirosEnemigos, posicion);
         tirosEnemigos.push(posicion);
         console.log('tirosNuestros:', tirosNuestros)
         console.log('tirosEnemigos:', tirosEnemigos)
 
-        const img2 = document.createElement('img');
+
         // Exploto la naranja y decide si pega o no pega
         if (tableroIslaArray[posicion] === 'X') {
+            console.log("encontre la X")
             //buscar y borrar espacio
-            
+            let indiceEncontrado = piezasIslaAcomodadas.findIndex(pieza => pieza.espacios.includes(posicion));
+            console.log('indiceEncontrado:', indiceEncontrado)
+            if (indiceEncontrado !== -1) {
+                // Encontrar el índice del número en el array espacios
+                let posicionEnEspacios = piezasIslaAcomodadas[indiceEncontrado].espacios.indexOf(posicion);
+                if (posicionEnEspacios !== -1) {
+                    // Eliminar el número del array espacios
+                    piezasIslaAcomodadas[indiceEncontrado].espacios.splice(posicionEnEspacios, 1);
+                    piezasIslaAcomodadas[indiceEncontrado].golpeados.push(posicion);
+                }
+            } else {
+                console.log(`El índice ${posicion} no se encuentra en ninguna pieza de piezasIslaAcomodadas.`);
+            }
+                    
             //verificar si hundio el barco
-            // si es que no
-            img2.src = './img/king orange.png';
-            tableroIslaDivs[posicion].style.backgroundColor = '#0080004d'
             
-            // si es que si
-            // borrar las otras imagenes y colocar la de hundido
+            if(piezasIslaAcomodadas[indiceEncontrado].espacios.length == 0){
+                // borrar las otras imagenes y colocar la de hundido
+                if(piezasIslaAcomodadas[indiceEncontrado].golpeados.length != 0){
+                    piezasIslaAcomodadas[indiceEncontrado].golpeados.forEach(element => {
+                        tableroIslaDivs[element].innerHTML = '';
+                    })
+                }
+                generaImagen (tableroIslaDivs, piezasIslaAcomodadas[indiceEncontrado], 'pirata')
 
-            
+                // verificar si termino la partida
+                const isTerminada = piezasIslaAcomodadas.every(pieza => Array.isArray(pieza.espacios) && pieza.espacios.length === 0);
+                if (isTerminada) {
+                window.location.href = '../cierre/has-perdido.html'
+                }
+
+            } else {
+                const img2 = document.createElement('img');
+                img2.src = './img/king orange.png';
+                img2.style.height = '4dvw';
+                img2.style.width = '4dvw';
+                tableroIslaDivs[posicion].appendChild(img2);
+            }
+            tableroIslaDivs[posicion].style.backgroundColor = '#0080004d'
+
+                        
         } else {
+            const img2 = document.createElement('img');
             img2.src = './img/sad-orange.png';
             tableroIslaDivs[posicion].style.backgroundColor = '#ff00004d'
             img2.style.opacity = '0.5'
+            img2.style.height = '4dvw';
+            img2.style.width = '4dvw';
 
+            tableroIslaDivs[posicion].appendChild(img2);
         }
-        img2.style.height = '4dvw';
-        img2.style.width = '4dvw';
-        tableroIslaDivs[posicion].appendChild(img2);
     });
 });
 
