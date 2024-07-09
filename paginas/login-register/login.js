@@ -28,14 +28,61 @@ selecDer.addEventListener('click', ()=>{
     registro.style.width = '70dvw'
 })
 
-// handle butons registro y login
-const registroBtn = document.getElementById('registro-btn')
-const loginBtn = document.getElementById('login-btn')
-//este boton está desconectado del formulario
-registroBtn.addEventListener('click', ()=>{
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const nombre = document.getElementById('nombre-usuario').value;
+  const email = document.getElementById('email').value;
+  const contraseña = document.getElementById('password').value;
+  try {
+      const response = await fetch('http://localhost:3000/api/user/registro', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ nombre, email, contraseña }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    document.getElementById('message').textContent = data.message || 'Registro exitoso';
     window.location.href = '../tablero/tablero.html'
-})
-//este boton está desconectado del formulario
-loginBtn.addEventListener('click', ()=>{
-    window.location.href = '../tablero/tablero.html'
-})
+} catch (error) {
+    console.error('Error:', error);
+    document.getElementById('message').textContent = 'Error en el registro, validá los datos ingresados';
+}
+});
+
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('email-login').value;
+  const contraseña = document.getElementById('password-login').value;
+
+  try {
+      const response = await fetch('http://localhost:3000/api/user/login', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, contraseña }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+          document.getElementById('message').textContent = 'Login exitoso';
+          // Aquí guardardamos el token en localStorage y redirigir al usuario
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('userId', data.userId);
+          // Redirigir a la página del juego o mostrar un mensaje de éxito
+          window.location.href = '../tablero/tablero.html'
+      } else {
+          document.getElementById('message').textContent = data.error || 'Error en el login';
+      }
+  } catch (error) {
+      console.error('Error:', error);
+      document.getElementById('message').textContent = 'Error en la conexión';
+  }
+});
